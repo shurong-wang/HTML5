@@ -1,0 +1,103 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>桌面提醒</title>
+    <style>
+        div{
+            width: 200px;
+            height: 80px;
+            border: 1px solid #A9A9A9;
+            font-family: "Microsoft Yahei", sans-serif;
+            margin-bottom: 10px;
+        }
+        input, button{
+            width: 200px;
+        }
+        div:nth-of-type(1){
+            background-color: antiquewhite;
+        }
+        div:nth-of-type(2){
+            background-color: blueviolet;
+        }
+        div:nth-of-type(3){
+            background-color: crimson;
+        }
+        div:nth-of-type(4){
+            background-color: darkorange;
+        }
+    </style>
+</head>
+<input type="text" x-webkit-speech value="x-webkit-speech 语音输入"/>
+<br><br>
+
+<button id="notifyButton">显示桌面通知</button>
+<br><br>
+<button id="requestbutton">是否允许桌面通知</button>
+<br><br>
+
+<div contenteditable="true">
+    <code>
+        contenteditable="true" <br>
+        设置元素内容可编辑
+    </code>
+</div>
+
+<div draggable="true">
+    <code>
+        draggable="true" <br>
+        设置元素可拖动
+    </code>
+</div>
+
+<div contextmenu="custom-menu">
+    <code>
+        contextmenu="custom-menu" <br>
+        自定义右键菜单
+    </code>
+</div>
+<menu id="custom-menu">
+    <command label="cmd 1" onclick="alert('复制');" />
+    <command label="cmd 2" onclick="alert('剪切');" />
+    <command label="cmd 3" onclick="alert('粘贴');" />
+</menu>
+
+<script>
+    document.getElementById('notifyButton').onclick = function(){
+        //判断浏览器是否支持notification
+        if(window.webkitNotifications){
+            //判断当前页面是否被允许发出通知：0 允许 1 未拒绝 2 拒绝
+            if(webkitNotifications.checkPermission() == 0){
+                //建立桌面通知
+                var icon_url = 'notice.png';
+                var title = 'Hello HTML5';
+                var body = 'I will be always here waiting for you!';
+                var notice = webkitNotifications.createNotification(icon_url, title, body);
+                //桌面通知分组
+                notice.tag = "Try";
+                //显示桌面通知
+                notice.show();
+                //回调函数
+                notice.onshow(function(){
+
+                });
+                notice.onclick(function(){
+
+                });
+                notice.onclose(function(){
+
+                });
+            }else{
+                //询问页面通知是否被允许发出通知
+                document.getElementById('requestbutton').onclick = function () {
+                    webkitNotifications.requestPermission();
+                };
+            }
+        }else{
+            alert("您的浏览器不支持桌面通知特性，请下载谷歌浏览器试用该功能");
+        }
+    };
+</script>
+<body>
+</body>
+</html>

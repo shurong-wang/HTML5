@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>上海3月开盘项目汇总-浦东区</title>
+    <link rel="stylesheet" href="style/css/demo.css" type="text/css">
+    <link rel="stylesheet" href="style/css/lib.css" type="text/css">
+    <link rel="stylesheet" href="style/css/hl.css" type="text/css">
+</head>
+
+<body>
+<div id="main">
+    <div id="body" class="light">
+        <div id="content" class="show">
+            <div class="demo">
+                <h4 class="tc f14">上海3月开盘项目汇总</h4>
+                <div class="mt10 cho_box z">
+                    <b class="cho_line"></b>
+                    <div class="fix">
+                        <!-- 左边的选菜项 -->
+                        <div class="cho_left">
+                            <div class="equal_height cho_equal_height"></div>
+                            <ul id="choMenu" class="rel cho_menu">
+                                <li><a href="ajax.php?area=pudong"
+                                       class="cho_link">浦东区<span class="ml20">8</span></a></li>
+                                <li><a href="ajax.php?area=baoshan"
+                                       class="cho_link">宝山区<span class="ml20">7</span></a></li>
+                                <li><a href="ajax.php?area=qingpu"
+                                       class="cho_link">青浦区<span class="ml20">3</span></a></li>
+                                <li><a href="ajax.php?area=minhang"
+                                       class="cho_link">闵行区<span class="ml20">4</span></a></li>
+                                <li><a href="ajax.php?area=putuo"
+                                       class="cho_link">普陀区<span class="ml20">2</span></a></li>
+                                <li><a href="ajax.php?area=zhabei"
+                                       class="cho_link">闸北区<span class="ml20">1</span></a></li>
+                                <li><a href="ajax.php?area=fengxian"
+                                       class="cho_link">奉贤区<span class="ml20">5</span></a></li>
+                            </ul>
+                        </div>
+
+                        <!-- 右侧主列表 -->
+                        <div class="cell">
+                            <ul class="fix cho_list_title">
+                                <li class="l pct20">楼盘名</li>
+                                <li class="l pct30">价格</li>
+                                <li class="cell">项目地址</li>
+                            </ul>
+                            <div id="listBox">
+                                <div class="cho_loading">数据加载中...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script id="tempChoList" type="text/template">
+    <ul class="fix cho_list">
+        <li class="l pct20">$name$</li>
+        <li class="l pct30">$price$</li>
+        <li class="cell">$address$</li>
+    </ul>
+</script>
+
+<script src="style/js/jquery.js"></script>
+<script>
+/*
+// 要求：ajax 请求的页面后，“后退”、“刷新”、“前进”按钮仍然可用
+// 实现：
+    1. 每次点击左侧菜单，将Ajax查询URL参数(?后面部分)附在当前地址栏URL后面，使用 history.pushState 可以修改地址栏URL并记录浏览器历史。
+    2. 浏览器的前进与后退操作会触发 window.onpopstate 事件。通过监听 popstate 事件，根据当前地址栏URL查询参数反向发起响应Ajax请求，实现无刷新前进与后退效果。
+    3. 页面首次载入的时候，如果没有查询地址或查询地址不匹配，则使用第一个菜单的Ajax地址的查询内容，并使用 history.replaceState 更改当前的浏览器历史，然后触发Ajax操作。
+*/
+
+    var eleMenuOn = null, eleListBox = $("#listBox"), tempList = $("#tempChoList").html(), clMenuOn = "cho_link_on", jQueryXHR = null;
+
+    // 替换模板变量
+    String.prototype.temp = function (obj) {
+        return this.replace(/\$\w+\$/gi, function (matchs) {
+            var attr = matchs.replace(/\$/g, "");
+            var returns = obj[attr];
+            return (returns + "") == "undefined" ? "" : returns;
+        });
+    };
+
+    // 切换左侧栏页签
+    var eleMenus = $("#choMenu a").on("click", function (event) {
+        var menuQuery = this.href.split("?")[1]; // area=pudong
+        if (history.pushState && menuQuery && !$(this).hasClass(clMenuOn)) {
+            // 点亮页签
+            eleMenuOn && eleMenuOn.removeClass(clMenuOn);
+            eleMenuOn = $(this).addClass(clMenuOn);
+            eleListBox.html('<div class="cho_loading">数据加载中...</div>');
+
+            // 发送 ajax 请求
+            jQueryXHR && jQueryXHR.abort();
+            jQueryXHR = $.ajax({
+                url: this.href,
+                dataType: "json",
+                timeout: 3000
+            }).done(function (data) {
+                var html = '';
+                if ($.isArray(data)) {
+                    $.each(data, function (i, obj) {
+                        html += tempList.temp(obj); // 替换模板变量
+                    });
+                }
+                // 更新页面内容
+                eleListBox.html(html || '<div class="tc cr pt30">暂无数据！</div>');
+            }).fail(function (jqXHR, textStatus) {
+                if('abort' == textStatus){
+                }else if('timeout' == textStatus){
+                    eleListBox.html('<div class="tc cr pt30">请求超时！</div>');
+                }else{
+                    eleListBox.html('<div class="tc cr pt30">数据获取失败！</div>');
+                }
+            });
+
+            // history 处理
+            var title = "上海3月开盘项目汇总-" + $(this).text().replace(/\d+$/, "");
+            document.title = title;
+            if (event && /\d/.test(event.button)) {
+                // history.pushState(data, title, url) 修改地址栏URL并记录浏览器历史
+                history.pushState({title: title}, title, location.href.split("?")[0] + "?" + menuQuery);
+            }
+        }
+        return false;
+    });
+
+    var fnHashTrigger = function (target) {
+        var urlQuery = location.href.split("?")[1], eleTarget = target || null;
+
+        // 如果地址栏URL没有查询字符，则使用第一个导航菜单的查询字符
+        if (typeof urlQuery == "undefined") {
+            eleTarget = eleMenus.get(0);
+            if (eleTarget) {
+                var currentUrl = location.href.split("#")[0];
+                var menuQuery = eleTarget.href.split("?")[1];
+                // history.replaceState(data, title, url) 修改地址栏URL，同时修改浏览器历史
+                history.replaceState(null, document.title, currentUrl + "?" + menuQuery);
+                fnHashTrigger(eleTarget);
+            }
+        } else {
+            eleMenus.each(function () {
+                if (eleTarget === null && this.href.split("?")[1] === urlQuery) {
+                    eleTarget = this;
+                }
+            });
+
+            // 如果地址栏URL没有查询字符不对应导航菜单任意一项，则删除该查询字符，同时修改浏览器历史，然后重新执行回调
+            if (! eleTarget) {
+                history.replaceState(null, document.title, location.href.split("?")[0]);
+                fnHashTrigger();
+            } else {
+                $(eleTarget).trigger("click");
+            }
+        }
+    };
+
+    // 监听 popstate 事件
+    if (history.pushState) {
+        window.addEventListener("popstate", function () {
+            fnHashTrigger();
+        });
+
+        // 自动请求
+        fnHashTrigger();
+    }
+</script>
+
+</body>
+</html>

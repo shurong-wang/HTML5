@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>WebSocket</title>
+</head>
+<body>
+
+<script type="text/javascript">
+var url = "ws://localhost:8888";
+var ws = new WebSocket(url);
+ws.onopen = function(){
+  console.log("握手成功，打开socket连接了。。。");
+  ws.send(("Websocket opened!"));
+};
+ws.onmessage = function(e){
+  console.log("message:" + e.data);
+};
+ws.onclose = function(){
+  console.log("断开socket连接了。。。");
+};
+ws.onerror = function(e){
+  console.log("ERROR:" + e.data);
+};
+</script>
+</body>
+</html>

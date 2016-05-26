@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>触发 storage 事件</title>
+</head>
+
+<body>
+    <h3>监听 storage 事件，同步窗口间的数据</h3>
+    <input type="checkbox" value="HTML5"/>HTML5<br/>
+    <input type="checkbox" value="CSS3"/>CSS3<br/>
+    <input type="checkbox" value="ES6"/>ES6<br/>
+    <input type="checkbox" value="Node.js"/>Node.js<br/>
+
+    <script>
+        window.onload = function () {
+            var checkboxs = [].slice.call(document.querySelectorAll('input'));
+
+            // 保存本地数据
+            checkboxs.forEach(function (elem) {
+                elem.addEventListener('click', function () {
+                    window.localStorage.setItem(this.checked ? 'sel' : 'undo', this.value);
+                }, false);
+            });
+
+            // 更新本地数据
+            /*
+            关于 storage 事件:
+                1. 当数据有修改或删除的情况下，会触发非本窗口的 storage 事件
+                2. localStorage 的 storage 事件在本窗口外的窗口对象触发，本窗口
+                3. sessionStorage 的 storage 事件，通过本窗口的 iframe 操作触发（因为 sessionStorage 不能共享窗口数据）
+            */
+            // 监听 storage 事件，同步窗口间数据
+            window.addEventListener('storage', function (evt) {
+                console.log(evt);
+                /*
+                    evt.key         修改或删除的 key 值，如果调用 clear(), key 为 null
+                    evt.newValue    修改后的新值，如果调用 removeStorage(), key 为 null
+                    evt.oldValue    修改前的旧值
+                    evt.storageArea 当前的 storage 对象
+                    evt.url         触发该脚本变化的文档的 url
+                */
+                checkboxs.forEach(function (elem) {
+                    if(evt.newValue == elem.value){
+                        elem.checked = evt.key == 'sel' ? true : false;
+                    }
+                });
+            }, false);
+        };
+    </script>
+</body>
+</html>

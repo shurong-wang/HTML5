@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <title>腾讯地图</title>
+    <style>
+        iframe, div, button {
+            font-size: 20px;
+            font-family: "Microsoft Yahei", sans-serif;
+            width: 200px;
+            text-align: center;
+            margin: 10px 0;
+        }
+
+        iframe, div {
+            height: 100px;
+            line-height: 100px;
+            border: 1px solid #A9A9A9;
+        }
+
+        button {
+            color: white;
+            height: 50px;
+            border-radius: 5px;
+            box-shadow: 2px 2px 2px #999;
+            background: linear-gradient(135deg, white, gray);
+        }
+    </style>
+    <!--<script src="debug.js"></script>-->
+    <script src="//cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+</head>
+<body>
+<iframe src="http://apis.map.qq.com/tools/geolocation?key=MCZBZ-ZDHWJ-KAZFR-FYYTQ-74NNV-HBB52&referer=myapp" frameborder=0 scrolling="no">
+</iframe>
+<div id="loc-res">点击按钮定位城市</div>
+<button id="loc-btn">定位</button>
+
+<div>北京</div>
+<div>上海</div>
+<div>广州</div>
+
+<script type="text/javascript">
+    var posData, $locBtn = $('#loc-btn'), $locRes = $('#loc-res'), timer = null, loc = null;
+
+    // 监听定位组件的 message 事件
+    window.addEventListener('message', function (event) {
+        // 接收位置信息
+        if (event.data && event.data.module == 'geolocation') {
+            posData = event.data;
+        }
+    }, false);
+
+    $locBtn.on('click', locateCity);
+
+    // 定位城市
+    function locateCity() {
+        $locRes.html("定位中...");
+        if (!navigator.geolocation) {
+            alert("你的浏览器不支持定位功能");
+            $locRes.html("选择城市");
+            return;
+        }
+        qqLocation();
+    }
+
+    // 手机QQ获取地理坐标
+    function qqLocation() {
+        if (posData) { //定位成功
+            var qqPosition = {
+                "coords": {
+                    latitude: posData.lat,
+                    longitude: posData.lng,
+                    prov: posData.province, // 省
+                    city: posData.city, // 市
+                    dist: posData.district, // 区
+                    addr: posData.addr // 地址名
+                }
+            };
+            getPositionSuccess(qqPosition.coords);
+        }
+    }
+
+    // 获取经纬度成功 --回调函数
+    function getPositionSuccess(position) {
+
+
+        $locRes.html(position.city + position.dist);
+    }
+
+    // 获取经纬度失败 --回调函数
+    function getPositionError(error) {
+        $locRes.html("选择城市");
+        switch (error.code) {
+            case error.TIMEOUT :
+                alert(" 定位连接超时，请重试 ");
+                break;
+            case error.PERMISSION_DENIED :
+                alert(" 您拒绝了定位服务，查询已取消 ");
+                break;
+            case error.POSITION_UNAVAILABLE :
+                alert(" 获取位置失败，请选择城市 ");
+                break;
+        }
+    }
+</script>
+</body>
+</html>

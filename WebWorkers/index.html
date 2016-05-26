@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Web Worker</title>
+</head>
+<body>
+<input id="start-num" type="text" value="0"/>
+<button id="start">Start</button>
+<button id="stop">Stop</button>
+
+<script type="text/javascript">
+	var numDiv, startNum, work = null;
+
+	window.onload = function(){
+        startNum = document.getElementById("start-num");
+		document.getElementById("start").onclick = startWorker;
+		document.getElementById("stop").onclick = stopWorker;
+	}
+
+	function startWorker(){
+		if(work){
+            alert('工作线程已开启');
+			return;
+		}
+		// 开辟工作线程，此时不会阻塞主线程
+		work = new Worker("count.js");
+        work.postMessage(startNum.value);
+
+		// event 参数中的 data 属性，就是子线程中返回的结果
+		work.onmessage = function(event){
+            startNum.value = event.data;
+		}
+	}
+
+	function stopWorker(){
+		if(work){
+			work.terminate();
+			work = null;
+		}
+	}
+</script>
+</body>
+</html>

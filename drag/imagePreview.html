@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>图片预览</title>
+    <style>
+        ul, li{
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+        .box, .list{
+            font-family: "Microsoft Yahei", sans-serif;
+            font-size: 18px;
+            width: 200px;
+            text-align: center;
+            margin: 10px;
+        }
+        div.box{
+            border: dashed 2px #999;
+            height: 200px;
+            line-height: 200px;
+        }
+        ul.list{
+            border: solid 2px #999;
+        }
+        ul.list li{
+            border-bottom: solid 1px #ccc;
+        }
+    </style>
+</head>
+
+<body>
+<div id="box" class="box">+ 将图片拖拽到方框内</div>
+<ul id="list" class="list"></ul>
+
+<script>
+/*
+元素默认的拖放事件执行顺序（无法触发 drop 事件）：
+    dragenter >  dragover >  dragleave > dragend
+
+阻止元素 dragover 默认行为时，事件执行顺序：
+    dragenter >  dragover >  drop > dragend
+*/
+
+window.onload = function () {
+    var targetBox = document.getElementById('box');
+    var imgList = document.getElementById('list');
+
+    // 拖动元素进入目标元素
+    targetBox.ondragenter = function () {
+        this.innerHTML = '[请释放鼠标]';
+    };
+
+    // 拖动元素与目标元素重合
+    targetBox.ondragover = function (ev) {
+        ev.preventDefault();
+    };
+
+    // 拖动元素与目标元素重合并释放鼠标
+    targetBox.ondrop = function (ev) {
+        this.innerHTML = '+ 将图片拖拽到方框内';
+        ev.preventDefault();
+        // 获取外部拖拽的文件 filesList 列表
+        var files = ev.dataTransfer.files;
+        // dataTransfer.files[0].type 获取文件的类型
+        console.log(files[0].type);
+
+        for (var i = 0; i < files.length; i++) {
+            if (files[i].type.indexOf('image') == -1) {
+                alert('请选择图片类型');
+            } else {
+                var file = new FileReader();
+                file.readAsDataURL(files[i]);
+                file.onload = function () {
+                    console.log(this.result);
+                    var oLi = document.createElement('li');
+                    var oImg = document.createElement('img');
+                    oImg.src = this.result;
+                    oImg.style.width = getComputedStyle(imgList, null).width;
+                    oLi.appendChild(oImg);
+                    imgList.appendChild(oLi);
+                };
+            }
+        }
+    };
+
+    // 拖放元素离开目标元素
+    targetBox.ondragleave = function () {
+        this.innerHTML = '+ 将图片拖拽到方框内';
+    };
+};
+</script>
+</body>
+</html>

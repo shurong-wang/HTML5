@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Html5</title>
+    <link href="style/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<header>
+    <nav>
+        <ul>
+            <li><a href="###">课程设置</a></li>
+            <li><a href="###">就业信息</a></li>
+            <li><a href="###">业界新闻</a></li>
+            <li><a href="###">企业合作</a></li>
+            <li><a href="###">在线报名</a></li>
+            <li><a href="###">课程视频</a></li>
+            <li><a href="###">资料下载</a></li>
+        </ul>
+    </nav>
+    <audio id="audio"></audio>
+</header>
+
+<script>
+    ready(function () {
+        var tabs = [].slice.call(document.querySelectorAll('nav li'));
+        var audio = document.querySelector('#audio');
+        var AUDIOURL = 'http://s8.qhimg.com/share/audio/piano1/';
+        var audioFiles = ['a', 'b', 'c', 'd', 'e', 'f', 'g'];
+        tabs.forEach(function (elem, index) {
+            elem.addEventListener('mouseover', function () {
+                audio.src = AUDIOURL + audioFiles[index] + 6 + '.mp3';
+                audio.play();
+            });
+        })
+    });
+
+    function ready(fn) {
+        if (document.readyState != 'loading'){
+            fn();
+        } else {
+            document.addEventListener('DOMContentLoaded', fn);
+        }
+    }
+</script>
+</body>
+</html>

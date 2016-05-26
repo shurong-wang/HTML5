@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+    <title>Parent window post message</title>
+	<style type="text/css">
+		.color-wrap{ width:200px; height:200px; text-align: center; line-height:200px; border:solid 1px #333; }
+	</style>
+</head>
+<body>
+    <div id="color-div" class="color-wrap">
+		Parent window
+	</div>
+
+	<!-- 通过 iframe 嵌入子页面 -->
+    <iframe id="child" class="color-wrap" src="http://b.test.com/child.html"></iframe>
+
+    <script type="text/javascript">
+		var iframeEl = document.getElementById("child");
+		var divEl = document.getElementById('color-div');
+
+        window.onload = function(){
+			// 通过 postMessage 方法，向子窗口发送数据
+			// 第一个参数：要发送的消息文本，可以是 JSON 字符串
+			// 第二个参数：接收消息的子窗口的 URL 地址，可以使用通配符'*'指定全部地址
+            iframeEl.contentWindow.postMessage('get-color', 'http://b.test.com');
+        }
+		
+		// 通过 message 事件监听消息返回
+        window.addEventListener('message', function(event){
+			// event 参数中有 data 属性，就是子窗口返回的数据
+            divEl.style.backgroundColor = event.data;
+        }, false);
+    </script>
+</body>
+</html>

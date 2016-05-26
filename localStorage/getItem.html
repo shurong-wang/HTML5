@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<title>通过 getItem 方法，恢复页面关闭前的数据</title>
+</head>
+
+<body>
+    <form>
+        <p>姓名: <input id="uname" type="text" /></p>
+        <p>性别:
+            <input type="radio" value="男" name="sex" />男
+            <input type="radio" value="女" name="sex" />女
+        </p>
+        <p>留言: <textarea id="msg"></textarea></p>
+    </form>
+
+	<script>
+        var unameInp = document.querySelector('#uname');
+        var sexRdos = [].slice.call(document.querySelectorAll('[name=sex]'));
+        var msgText = document.querySelector('#msg');
+
+
+        // 离开页面时，保存 storge 数据
+        window.onunload = function(){
+            if(typeof unameInp.value != 'undifined'){
+                unameInp.value = localStorage.setItem('uname', unameInp.value);
+            }
+            sexRdos.forEach(function(elem){
+                elem.value != 'undifined' && localStorage.setItem('sex', elem.value);
+            });
+            if(typeof msgText.value != 'undifined'){
+                localStorage.setItem('msg', msgText.value);
+            }
+        };
+
+        // 载入页面时，读取 storge 数据
+		window.onload = function(){
+			if(typeof localStorage.getItem('uname') != 'undifined'){
+                unameInp.value = localStorage.getItem('uname');
+			}
+			if(typeof localStorage.getItem('sex') != 'undifined'){
+                sexRdos.forEach(function(elem){
+                    elem.checked = elem.value == localStorage.getItem('sex');
+                });
+			}
+			if(typeof localStorage.getItem('msg') != 'undifined'){
+                msgText.value = localStorage.getItem('msg');
+			}
+		};
+	</script>
+</body>
+</html>

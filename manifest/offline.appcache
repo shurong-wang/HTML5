@@ -1,0 +1,13 @@
+CACHE MANIFEST
+# 2016-05-22 v1.0.0
+
+CACHE
+/style/offline.gif
+/style/offline.css
+/style/offline.js
+
+NETWORK:
+*
+
+FALLBACK:
+/manifest/ /404.html

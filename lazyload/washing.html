@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en" style="overflow-x: hidden">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+<meta content="yes" name="apple-mobile-web-app-capable">
+<meta content="black" name="apple-mobile-web-app-status-bar-style">
+<meta content="telephone=no" name="format-detection">
+<meta content="email=no" name="format-detection">
+<meta content="" name="pgv">
+<meta content="authenticity_token" name="csrf-param">
+<meta content="3whHarxOWz0/qJh+lvf8pz9Zdv6Lv+dNaLbG+tSvBuA=" name="csrf-token">
+<title>洗衣服务</title>
+<link href="http://cdnwww.edaixi.com/assets/cloth_prices-8f7038284f844827885d7036f36b22af.css" media="screen" rel="stylesheet">
+<!--[if lt IE 9]><script src="./style/js/html5.min"></script><![endif]-->
+<script src="//cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="./include/js/jquery-1.11.1.min.js">\x3C/script>')</script>
+<script type="text/javascript" src="./include/js/debug.min.js"></script>
+<script type='text/javascript'>
+    window.onerror = function() {
+        location.reload(true);
+        return true;
+    }
+</script>
+<style>
+    .box {
+      -webkit-transform: rotate(45deg);
+              transform: rotate(45deg);
+      border-radius: 5px;
+      box-shadow: 1px 1px 0 rgba(0,0,0,.25);
+      transition: all .2s ease .1s;
+    }
+        
+</style>
+</head>
+<body class="gray_bg price-navbar" id="price_navbar" onmousewheel="" scroll="no">
+<div id="washing-tabs" class="order_weixin">
+    <a class="nav_a active_nav" href="http://edx.rongchang.com/washing.html" id="by_cloth_wx">洗衣计价</a>
+    <a class="nav_a" href="http://www.edaixi.com/washing_prices/home_textile_prices/1" id="by_home_textile_wx">家纺计价</a>
+    <a class="nav_right" href="http://www.edaixi.com/washing_prices/bag_prices/1" id="by_bag_wx">按袋计价</a>
+</div>
+<!-- 以上可用 header.html 替换 -->
+
+<div id="container">
+    <div class="washing_cloth" style="margin-bottom: 80px;">
+        <div class="title">
+            <div class="text-center">专业洗衣服务，72小时内送回</div>
+        </div>
+        <div class="price_list">
+            <p class="p5" style="padding-top: 0">按件计价</p>
+            <div id="price-tabs" class="tab_nav_price">
+                <span class="on">9元/件</span>
+                <span>19元/件</span>
+                <span>29元/件</span>
+            </div>
+            <div id="price-items">
+                <!-- 9元/件 start -->
+                <div class="price_div current_border" id="content-2423">
+                    <p>夏装（衬衫、T恤、裤装、长短裙等轻薄款，含：领带、围巾等配件）</p>
+                    <div class="block_pic">
+                        <div class="pic">
+                            <img alt="马甲" class="preload" src="include/images/default.gif" data-original="./include/images/good-detail-1443150091109">
+                            <div>马甲</div>
+                        </div>
+                        <div class="pic">
+                            <img alt="长T恤" class="preload" src="include/images/default.gif" data-original="./include/images/good-detail-1443150482547">
+                            <div>长T恤</div>
+                        </div>
+                        <div class="pic">
+                            <img alt="短T恤" class="preload" src="include/images/default.gif" data-original="./include/images/good-detail-1443150667463">
+                            <div>短T恤</div>
+                        </div>
+                        <div class="pic">
+                            <img alt="衬衣" class="preload" src="include/images/default.gif" data-original="./include/images/good-detail-1443150687235">
+                            <div>衬衣</div>
+                        </div>
+                        <div class="pic">
+                            <img alt="秋衣" class="preload" src="include/images/default.gif" data-original="./include/images/good-detail-1445499989278">
+                            <div>秋衣</div>
+                        </div>
+                        <div class="pic">
+                            <img alt="背心" class="preload" src="include/images/default.gif" data-original="./include/images/good-detail-1443152145255">
+                            <div>背心</div>
+                        </div>
+                        <div class="pic">
+                            <img alt="针织背心" class="preload" src="include/images/default.gif" data-original="./include/images/good-detail-1443152162699">
+                            <div>针织背心</div>
+                        </div>
+                        <div class="pic">
+                            <img alt="短裤" class="preload" src="include/images/default.gif" data-original="./include/images/good-detail-1443152179375">
+                            <div>短裤</div>
+                        </div>
+                        <div class="pic">
+                            <img alt="长裤" class="preload" src="include/images/default.gif" data-original="./include/images/good-detail-1443152191414">
+                            <div>长裤</div>
+                        </div>
+                        <div class="pic">
+                            <img alt="半身短裙" class="preload" src="include/images/default.gif" data-original="./include/images/good-detail-1443152347919">
+                            <div>半身短裙</div>
+                        </div>
+                        <div class="pic">
+                            <img alt="半身长裙" class="preload" src="include/images/default.gif" data-original="./include/images/good-detail-1443152361479">
+                            <div>半身长裙</div>
+                        </div>
+                        <div class="pic">
+                            <img alt="领带" class="preload" src="include/images/default.gif" data-original="./include/images/good-detail-1443152375124">
+                            <div>领带</div>
+                        </div>
+                        <div class="pic">
+                            <img alt="帽子" class="preload" src="include/images/default.gif" data-original="./include/images/good-detail-1443152389238">
+                            <div>帽子</div>
+                        </div>
+                        <div class="pic">
+                            <img alt="休闲帽" class="preload" src="include/images/default.gif" data-original="./include/images/good-detail-1443152402741">
+                            <div>休闲帽</div>
+                        </div>
+                        <div class="pic">
+                            <img alt="围巾" class="preload" src="include/images/default.gif" data-original="./include/images/good-detail-1443152418889">
+                            <div>围巾</div>
+                        </div>
+                        <div class="pic">
+                            <img alt="丝巾" class="preload" src="include/images/default.gif" data-original="./include/images/good-detail-1443152485448">
+                            <div>丝巾</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 9元/件 end -->
+
+                <!-- 19元/件 start -->
+                <div class="price_div" id="content-2424" style="display:none">
+                    <p>春秋装（西装、夹克等普通外套、连衣裙）</p>
+                    <div class="block_pic">
+                        <div class="pic">
+                            <img alt="西服上衣" class="preload" src="include/images/default.gif" data-original="./include/images/good-detail-1443152535561">
+                            <div>西服上衣</div>
+                        </div>
+                        <div class="pic">
+                            <img alt="西服夹克" class="preload" src="include/images/default.gif" data-original="./include/images/good-detail-1443152557255">
+                            <div>西服夹克</div>
+                        </div>
+                        <div class="pic">
+                            <img alt="羊毛/羊绒背心" class="preload" src="include/images/default.gif" data-original="./include/images/good-detail-1443152727123">
+                            <div>羊毛/羊绒背心</div>
+                        </div>
+                        <div class="pic">
+                            <img alt="羊绒/羊毛马甲" class="preload" src="include/images/default.gif" data-original="./include/images/good-detail-1443152858324">
+                            <div>羊绒/羊毛马甲</div>
+                        </div>
+                        <div class="pic">
+                            <img alt="羽绒马甲/背心" class="preload" src="include/images/default.gif" data-original="./include/images/good-detail-1443152892941">
+                            <div>羽绒马甲/背心</div>
+                        </div>
+                        <div class="pic">
+                            <img alt="棉马甲" class="preload" src="include/images/default.gif" data-original="./include/images/good-detail-1443152927504">
+                            <div>棉马甲</div>
+                        </div>
+                        <div class="pic">
+                            <img alt="棉睡衣" class="preload" src="include/images/default.gif" data-original="./include/images/good-detail-1443152947165">
+                            <div>棉睡衣</div>
+                        </div>
+                        <div class="pic">
+                            <img alt="毛衣" class="preload" src="include/images/default.gif" data-original="./include/images/good-detail-1443152967706">
+                            <div>毛衣</div>
+                        </div>
+                        <div class="pic">
+                            <img alt="风衣" class="preload" src="include/images/default.gif" data-original="./include/images/good-detail-1443152997213">
+                            <div>风衣</div>
+                        </div>
+                        <div class="pic">
+                            <img alt="运动休闲上衣" class="preload" src="include/images/default.gif" data-original="./include/images/good-detail-1443153013246">
+                            <div>运动休闲上衣</div>
+                        </div>
+                        <div class="pic">
+                            <img alt="牛仔上衣" class="preload" src="include/images/default.gif" data-original="./include/images/good-detail-1443153032042">
+                            <div>牛仔上衣</div>
+                        </div>
+                        <div class="pic">
+                            <img alt="冲锋衣（无内胆）" class="preload" src="include/images/default.gif" data-original="./include/images/good-detail-1443153050271">
+                            <div>冲锋衣（无内胆）</div>
+                        </div>
+                        <div class="pic">
+                            <img alt="针织衫" class="preload" src="include/images/default.gif" data-original="./include/images/good-detail-1443153095950">
+                            <div>针织衫</div>
+                        </div>
+                        <div class="pic">
+                            <img alt="亚麻上衣" class="preload" src="include/images/default.gif" data-original="./include/images/good-detail-1443153111407">
+                            <div>亚麻上衣</div>
+                        </div>
+                        <div class="pic">
+                            <img alt="羊绒/羊毛衫" class="preload" src="include/images/default.gif" data-original="./include/images/good-detail-1443153237743">
+                            <div>羊绒/羊毛衫</div>
+                        </div>
+                        <div class="pic">
+                            <img alt="连衣裙" class="preload" src="include/images/default.gif" data-original="./include/images/good-detail-1443153257292">
+                            <div>连衣裙</div>
+                        </div>
+                        <div class="pic">
+                            <img alt="披肩" class="preload" src="include/images/default.gif" data-original="./include/images/good-detail-1443153293625">
+                            <div>披肩</div>
+                        </div>
+                        <div class="pic">
+                            <img alt="毛领（单独洗）" class="preload" src="include/images/default.gif" data-original="./include/images/good-detail-1443153308593">
+                            <div>毛领（单独洗）</div>
+                        </div>
+                        <div class="pic">
+                            <img alt="连体裤" class="preload" src="include/images/default.gif" data-original="./include/images/good-detail-1446305451542">
+                            <div>连体裤</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 19元/件 end -->
+
+                <!-- 29元/件 start -->
+                   <div class="price_div" id="content-2425" style="display:none">
+                    <p>冬装大衣外套（羽绒服、棉服、羊毛羊绒外套等，含：旗袍）</p>
+                    <div class="block_pic">
+                        <div class="pic">
+                            <img alt="棉服上衣" class="preload" src="include/images/default.gif" data-original="./include/images/good-detail-1443153334757">
+                            <div>棉服上衣</div>
+                        </div>
+                        <div class="pic">
+                            <img alt="棉夹克" class="preload" src="include/images/default.gif" data-original="./include/images/good-detail-1443153348652">
+                            <div>棉夹克</div>
+                        </div>
+                        <div class="pic">
+                            <img alt="睡袍" class="preload" src="include/images/default.gif" data-original="./include/images/good-detail-1443153366921">
+                            <div>睡袍</div>
+                        </div>
+                        <div class="pic">
+                            <img alt="羽绒服" class="preload" src="include/images/default.gif" data-original="./include/images/good-detail-1443153382369">
+                            <div>羽绒服</div>
+                        </div>
+                        <div class="pic">
+                            <img alt="呢子外套" class="preload" src="include/images/default.gif" data-original="./include/images/good-detail-1443153399684">
+                            <div>呢子外套</div>
+                        </div>
+                        <div class="pic">
+                            <img alt="羊绒/羊毛外套" class="preload" src="include/images/default.gif" data-original="./include/images/good-detail-1443153421402">
+                            <div>羊绒/羊毛外套</div>
+                        </div>
+                        <div class="pic">
+                            <img alt="毛外套" class="preload" src="include/images/default.gif" data-original="./include/images/good-detail-1443153440619">
+                            <div>毛外套</div>
+                        </div>
+                        <div class="pic">
+                            <img alt="唐装上衣" class="preload" src="include/images/default.gif" data-original="./include/images/good-detail-1443153455410">
+                            <div>唐装上衣</div>
+                        </div>
+                        <div class="pic">
+                            <img alt="丝绸旗袍" class="preload" src="include/images/default.gif" data-original="./include/images/good-detail-1443153473707">
+                            <div>丝绸旗袍</div>
+                        </div>
+                        <div class="pic">
+                            <img alt="冲锋衣（含内胆）" class="preload" src="include/images/default.gif" data-original="./include/images/good-detail-1443153489276">
+                            <div>冲锋衣（含内胆）</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 29元/件 end -->
+
+            </div>
+        </div>
+        <div class="price_title">
+            · 羽绒服、棉服等厚重衣物预计3-5天送回
+            <div style="padding: 0px 10px 10px 0px">. 皮衣、裘衣预计7-9天送回</div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 以下可用 footer.html 替换 -->
+<div id="order-btn" class="btn_yuyue">
+    <a id="order-link" class="order-link" href="http://www.baidu.com?user_type=13&keyword=edaixi">预约取件</a>
+</div>
+    
+<script>
+// 当前 URL 参数的 JSON 对象
+var requestJSON = getQueryJSON(location.href);
+var userType = requestJSON['user_type'], xiaoeFlag = requestJSON['eservice'];
+var 
+    $preloadImgs = $('img.preload'),
+    $washingTabs = $('#washing-tabs').find('span'),
+    $priceTabs = $("#price-tabs").find('span'),
+    $priceItems = $("#price-items").find('.price_div'),
+    $orderBtn = $('#order-btn');
+
+$(document).ready(function(){
+    addUrlParams();
+    setOrderBtn();
+    $preloadImgs.each(imgpreload);
+    $priceTabs.on('click', switchPriceTab);
+});
+
+// 切换价格页签
+function switchPriceTab(){
+    var $thisTab = $(this);
+    $thisTab.addClass("on").siblings().removeClass("on");
+    $priceItems.eq($thisTab.index()).addClass("current_border").show()
+    .siblings().removeClass("current_border").hide();
+}
+
+// 向页面内的 <a/> 的链接追加参数
+function addUrlParams(){
+   var a = document.getElementsByTagName('a');
+   Array.prototype.forEach.call(a, function(el, i){
+       var aUrl = el.href;
+       var aJSON = getQueryJSON(aUrl);
+       for(var k in requestJSON){
+           if(requestJSON[k]){
+               aJSON[k] = requestJSON[k];
+           }
+       }
+       var queryString = JSON2Query(aJSON);
+       if(queryString){
+           if(aUrl.indexOf('?') > 0){
+               el.href = aUrl.substr(0, aUrl.indexOf('?')) + '?' + queryString;
+           }else{
+               el.href += '?' + queryString;
+           }
+       }
+   });
+}
+
+// 根据渠道来源区别展示"预约取件"按钮(** 不应 JS 控制,应该由 Ruby 直接在 DOM 中判断 **)
+function setOrderBtn(){
+    if(userType == 2 || userType == 3 || userType == 'xiaoeapp' ){      
+        $orderBtn.hide();
+    }
+    if(userType == 18 || xiaoeFlag == 'eservice'){
+        $washingTabs.css({'background':"#9ac642"});
+        $priceTabs.css('border-color','#9ac642').addClass('click');
+        $priceItems.css('border-color','#9ac642');
+        $orderBtn.css({'background':"#9ac642"});
+    }
+}
+
+// 获取指定 URL 的 QueryString 
+function getQueryString(url){
+    if(url.indexOf('?') == -1) {
+        return '';
+    } else {
+       return url.substr(url.indexOf('?') + 1);
+    }
+}
+
+// 获取 URL QueryString,并转化为 JSON 对象
+function getQueryJSON(url){
+    var queryString = getQueryString(url);
+    var queryArr = [], queryJSON = {};
+    if (queryString) {
+        queryArr = queryString.split("&"); 
+        for(var i = 0, len = queryArr.length; i < len; i ++) {
+            var hash = queryArr[i].split("=");
+            var key = hash[0], val = hash[1];
+            if(key && val){
+                queryJSON[key] = unescape(val);     
+            }
+        } 
+    }
+    return queryJSON;
+}
+
+// 将 JSON 对象转化为 QueryString
+function JSON2Query(json){
+    if(!json){
+        return '';
+    }
+    var queryArr = [], queryString = '';
+    for(var k in json){
+        if(json[k]){
+            queryArr.push(k + '=' + json[k]);
+        }
+    }
+    queryString = queryArr.join('&');
+    return queryString;
+}
+
+// 图片预加载
+function imgpreload(){
+   var __this__ = $(this);  // <img/>
+   var url = __this__.data('original');  // 原始图片地址
+   var src = __this__.attr('src');  // 占位图片地址  
+   if(url ==''|| url == src){  
+        return;  
+   }  
+   var img = new Image();  
+   img.src = url;
+   if(img.complete) {  
+        __this__.attr('src',url); 
+        return;  
+    }  
+    img.onload = function(){ 
+        __this__.attr('src',url);  
+    }  
+}  
+</script>
+
+<!--Start Piwik Code-->
+<script>
+    var _paq = _paq || [];
+    _paq.push(['trackPageView']);
+    _paq.push(['enableLinkTracking']);
+    (function() {
+      var u="//analysis.edaixi.com/";
+      _paq.push(['setTrackerUrl', u+'piwik.php']);
+      _paq.push(['setSiteId', 3]);
+      var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+      g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+    })();
+</script>
+<noscript>
+    <p><img src="//analysis.edaixi.com/piwik.php?idsite=3" style="border:0;" alt="" /></p>
+</noscript>
+<!--End Piwik Code-->
+</body>
+</html>

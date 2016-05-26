@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>收藏夹</title>
+    <style type="text/css">
+        div {
+            margin: 0;
+            padding: 0;
+            font-family: "Microsoft Yahei", sans-serif;
+            box-sizing: border-box;
+        }
+
+        .wrap {
+            border: solid 1px #3c3c3c;
+            width: 500px;
+            height: 100%;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav {
+            color: white;
+            width: 100%;
+            border: 1px solid #ccc;
+        }
+
+        .nav > div {
+            display: inline-block;
+            padding: 10px;
+            background-color: #aaa;
+            margin: 3px;
+            cursor: pointer;
+        }
+
+        .collect, .garbage {
+            float: left;
+            height: 300px;
+            border: dashed 2px #0000ff;
+            text-align: center;
+            line-height: 30px;
+        }
+
+        .collect {
+            width: 59%;
+            margin-right: 1%;
+        }
+
+        .garbage {
+            width: 40%;
+        }
+
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <div id="nav" class="nav">
+        <div draggable="true">php</div>
+        <div draggable="true">es6</div>
+        <div draggable="true">python</div>
+        <div draggable="true">ruby</div>
+        <div draggable="true">html5</div>
+        <div draggable="true">css3</div>
+        <div draggable="true">react</div>
+    </div>
+    <div id="collect" class="collect"> + 收藏夹</div>
+    <div id="garbage" class="garbage" draggable="false"> + 回收站</div>
+</div>
+
+<script type="text/javascript">
+    var collect = document.querySelector("#collect");
+    var navItem = [].slice.call(document.querySelector("#nav").querySelectorAll("div"));
+    var garbage = document.querySelector("#garbage");
+
+    /*
+        元素 draggable 属性：
+            设置元素的 draggable 属性为 true，元素才可以拖拽
+
+        被拖拽元素事件：
+            dragstart 	拖拽前触发
+            drag	    拖拽中（连续）触发
+            dragend     拖拽结束时触发
+
+        目标元素事件：
+            dragenter 	进入目标元素时触发
+            dragover  	与目标元素有重合时（连续）触发
+            dragleave	离开目标元素时触发
+            drop 	    在目标元素上释放鼠标时触发(需要阻止目标元素的 dragover 默认行为)
+    */
+
+    // 拖动要收藏的条目
+    navItem.forEach(function (elem) {
+        elem.ondragstart = function (evt) {
+            /*
+             event.dataTransfer 对象：
+                在拖曳操作的过程中，可以通过 dataTransfer 对象来传输数据，以便在拖曳操作结束时对数据进行其他的操作
+                火狐浏览器只能拖拽图片元素，必须设置 event.dataTransfer 对象，才可以拖拽其他元素
+
+             event.dataTransfer 对象常用属性：
+                dataTransfer.effectAllowed: 设置光标样式，包括 none, copy, copyLink, copyMove, link, linkMove, move, all 和 uninitialized
+                dataTransfer.files：获取外部拖拽的文件 filesList 列表，可以通过 dataTransfer.files[0].type 获取文件的类型
+
+             event.dataTransfer 对象常用方法：
+                dataTransfer.setData(key, value): 设置数据 key 和 value, 必须是字符串
+                dataTransfer.getData(key): 根据 key 获取对应的 value 值
+                dataTransfer.clearData([key]): 删除指定 key 的数据，若不指定 key，则为删除对象中所有的数据
+                dataTransfer.addElement(elem): 添加自定义图标
+                dataTransfer.setDragImage(elem, x, y)：设置拖放操作的自定义图标
+             */
+            evt.dataTransfer.setData("text/plain", "<item>" + evt.target.innerHTML);
+        }
+    })
+
+    // 拖动到收藏夹 -- 必须阻止本身的 dragover 默认行为
+    collect.ondrop = function (evt) {
+        var text = evt.dataTransfer.getData("text/plain");
+        if (text.indexOf("<item>") == 0) {
+            var newEle = document.createElement("div");
+            newEle.id = new Date().getUTCMilliseconds();
+            newEle.innerHTML = text.substring(6);
+            newEle.draggable = "true";
+            newEle.ondragstart = function (evt) {
+                evt.dataTransfer.setData("text/plain", "<remove>" + newEle.id);
+            }
+            collect.appendChild(newEle);
+        }
+    }
+
+    // 拖动到回收站 -- 必须阻止本身的 dragover 默认行为
+    garbage.ondrop = function (evt) {
+        var id = evt.dataTransfer.getData("text/plain");
+        if (id.indexOf("<remove>") == 0) {
+            var target = document.getElementById(id.substring(8));
+            collect.removeChild(target);
+        }
+    }
+
+    // 阻止目标元素的 dragover 默认行为，触发 drop 事件
+    collect.ondragover = function (evt) {
+        return false;
+    }
+
+    // 阻止目标元素的 dragover 默认行为，触发 drop 事件
+    garbage.ondragover = function (evt) {
+        return false;
+    }
+</script>
+</body>
+</html>

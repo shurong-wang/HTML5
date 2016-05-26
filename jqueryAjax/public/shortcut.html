@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>快捷API Demo</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <script src="js/jquery-1.11.3.js"></script>
+</head>
+<body>
+<h3>$.get(url, [data], [callback], [type])<br/>
+    $.post(url, [data], [callback], [type])
+</h3>
+
+<p>以 GET|POST method 发送 ajax 请求<br/>
+    type: text|html|json|script
+</p>
+
+<hr/>
+<h3>$(selector).load(url, [data], [callback])</h3>
+
+<p>将页面片段载入到selector所代表的容器中</p>
+<div style="border:1px dashed gray" id="container">
+
+</div>
+
+<hr/>
+<h3>$.getJSON(url, [data], [callback])<br/>
+    $.getScript(url, [callback])</h3>
+
+<p>加载json格式数据或脚本</p>
+
+<hr/>
+<button class="btn btn-default btn-sm" onclick="test()"> TEST</button>
+<script>
+    // 所有快捷API都有一个共同特点：
+    // 不能指定错误时的回调
+    // 同时，有错误时（http status 或者 type 不匹配等）都没有任何提示
+    function test() {
+
+        // sendToTest();
+        // testWithData();
+        // testWithCallback();
+        // testWithDataAndCallback();
+        // testType();
+         testGetScript();
+        // testGetJson();
+        //  testLoad();
+    }
+
+    // only get|post
+    function sendToTest() {
+        $.get('/test');
+        $.post('/test');
+    }
+
+    // with data
+    function testWithData() {
+        $.get('/test?x=1');
+        $.get('/test', {y: 2});
+        $.post('/test', {z: 3});
+    }
+
+    // with callback
+    function testWithCallback() {
+        $.get('/user/allusers', function (data, callbacktype, jqXHR) {
+            console.log(data);
+            console.log(callbacktype);
+            console.log(jqXHR);
+        });
+    }
+
+    // with data and callback
+    // 请求参数应该尽量放在data参数中，因为可以自动编码，手动拼接url要注意编码问题
+    function testWithDataAndCallback() {
+        //
+        $.get('/user/list', {type: 1}, function (data) {
+            console.log(data);
+        });
+    }
+
+    function testType() {
+        $.get('/types', function (data, callbacktype, jqXHR) {
+            console.log(data);
+            console.log(data.a);
+            console.log(typeof  data);
+            console.log(jqXHR.getResponseHeader('Content-Type'));
+        });
+    }
+
+    function testGetScript() {
+        // alert(testFun(3, 4));
+        $.getScript('/js/testlib.js', function () {
+            alert(testFun(1, 2));
+        });
+    }
+
+    // 此处的例子用get更方便，$.getJson 最主要是用来进行jsonp跨域操作的
+    // 关于jsonp在下一个课程（跨域的AJAX）我们再详细介绍
+    function testGetJson() {
+        $.getJSON('/user/list', {type: 1}, function(data) {
+           console.log(data);
+        });
+    }
+
+    function testLoad() {
+       // $("#container").load('/user/allusers');
+
+        $("#container").load('/user/list', {type: 1}, function () {
+            console.log(arguments);
+        });
+    }
+</script>
+</body>
+</html>

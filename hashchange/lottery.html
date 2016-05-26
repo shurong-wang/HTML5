@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>模拟彩票投注（35 选 7）</title>
+</head>
+<body>
+	<button id="btn">机选一注</button>
+	<div id="wrap"></div>
+
+	<script>
+		window.onload = function(){
+			var oBtn = document.getElementById('btn');
+			var oDiv = document.getElementById('wrap');
+			var json = {};
+
+			oBtn.onclick = function(){
+				var hash = new Date().getTime();
+				var arr = randomNum(35, 7);
+				json[hash] = arr;
+				oDiv.innerHTML = arr;
+				window.location.hash = hash;
+			};
+
+			window.onhashchange = function(){
+				var hashVal = window.location.hash.substring(1); // 去除 #
+				oDiv.innerHTML = json[hashVal];
+			};
+
+			function randomNum(len, sublen){
+				var arr = [];
+				var newArr = [];
+				for(var i=1; i<=len; i++){
+					arr.push(i);
+				}
+				for(var i=0; i<sublen; i++){
+					var randomIndex = Math.floor(Math.random() * arr.length);
+					var randomEle = arr.splice(randomIndex, 1);
+					newArr.push(randomEle);
+				}
+				return newArr;
+			}
+
+		};
+	</script>
+</body>
+</html>

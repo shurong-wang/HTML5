@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>others</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <script src="js/jquery-1.11.3.js"></script>
+</head>
+<body>
+<h3>$.ajaxSetup(options) 设置全局默认参数</h3>
+<hr/>
+<h3>$. ajaxPrefilter([dataTypes], handler(options, originalOptions, jqXHR)) </h3>
+
+<p>请求发起前的预处理，提供了一种AOP（面向切面）编程模式，常见用途：</p>
+
+<p>1、根据options设定执行特定处理逻辑</p>
+
+<p>2、修改options值改变请求默认行为</p>
+
+<p>3、通过return修改默认dataType</p>
+<hr/>
+<h3>全局事件：所有$.ajax执行时都触发的事件</h3>
+
+<p>error success complete</p>
+
+<p>start stop send</p>
+<hr/>
+<h3>param、serialize、serializeArray</h3>
+
+<p>序列化</p>
+<hr/>
+<button class="btn btn-primary btn-sm" onclick="test();">TEST</button>
+<hr/>
+<form id="frm">
+    a: <input type="text" name="a" value="1"/><br/>
+    b: <input type="text" name="b" value="true"/><br/>
+    c: <input type="radio" name="c" value="x" checked/>x
+    <input type="radio" name="c" value="y"/>y<br/>
+    d: <input type="checkbox" name="d" value="1" checked/>1
+    <input type="checkbox" name="d" value="2" checked/>2
+    <input type="checkbox" name="d" value="3"/>3
+</form>
+<script>
+
+    function test() {
+        //testAjaxSetup();
+        //testPrefilter1();
+        //testPrefilter2();
+        //testPrefilter3();
+        //testGlobalEvents();
+         testOther();
+    }
+
+    function testAjaxSetup() {
+        $.ajax('/test');
+
+        $.ajaxSetup({
+            cache: false,
+            headers: {
+                test: new Date().getTime()
+            },
+            type: 'POST'
+        });
+
+        $.ajax('/test');
+        $.ajax('/user/allusers', {type: 'GET'});
+    }
+
+    function testPrefilter1() {
+        $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
+            // options, 请求参数，含默认值
+            // originalOptions, 请求时传入的参数，不含默认
+            // jaXHR, 增强的xhr对象
+            console.log(arguments);
+            // if (options.url == '/user/allusers') {
+            return 'text';
+            // }
+        });
+
+        $.ajax('/user/allusers', {
+            type: 'post',
+            // dataType: 'json',
+            test: 'haha'
+            , success: function (data) {
+                console.log(typeof data);
+            }
+        });
+    }
+
+    function testPrefilter2() {
+        var requests = {};
+        $.ajaxPrefilter(function (options, originOptions, jqXHR) {
+            if (requests[options.url]) {
+                requests[options.url].abort();
+            }
+            requests[options.url] = jqXHR;
+        });
+
+        $.ajax('/test');
+        $.ajax('/test')
+    }
+
+    function testPrefilter3() {
+        $.ajaxPrefilter(function (options, origOptions, jqXHR) {
+            if (options.url.substr(0, 5) == '/usr/') {
+                options.url = options.url.replace('/usr/', '/user/');
+                options.headers = {
+                    a: 1
+                };
+            }
+        });
+
+        $.ajax('/usr/allusers');
+    }
+
+    $(function () {
+        $('p').ajaxComplete(function () {
+            alert('success')
+        });
+
+    });
+
+    $(function () {
+        $(document).ajaxSuccess(globalEventHandler);
+        $(document).ajaxError(globalEventHandler);
+        $(document).ajaxComplete(globalEventHandler);
+        $(document).ajaxStart(globalEventHandler);
+        $(document).ajaxStop(globalEventHandler);
+        $(document).ajaxSend(globalEventHandler);
+    });
+
+    function globalEventHandler(event) {
+        console.log(event.type);
+        console.log(arguments);
+    }
+
+    function testGlobalEvents() {
+        $.ajax('/test?err=n', {});
+        $.ajax('/test?err=y', {});
+    }
+
+    function testOther() {
+        // $.param(obj, [traditional]);
+        console.log($.param({x: 1, y: 'ok', z: ['a', 'b']}, true));
+        console.log($("#frm").serialize());
+
+        var obj = $("#frm").serializeArray();
+        console.log(obj);
+        console.log(JSON.stringify(obj));
+    }
+</script>
+</body>
+</html>

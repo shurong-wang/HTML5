@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>deferred</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <script src="js/jquery-1.11.3.js"></script>
+</head>
+<body>
+<h3>使用done, fail, always处理ajax响应</h3>
+<p>代码可读性提高</p>
+<p>可绑定多个处理函数</p>
+<hr />
+<h3>defrred 原理与使用</h3>
+<p>$.Deferred()</p>
+<p>reject, resovled</p>
+<hr />
+<h3>when, then</h3>
+<hr />
+<button class="btn btn-sm btn-primary" onclick="test();">TEST</button>
+<script>
+    function test() {
+        // testAjax1();
+        // testAjax2();
+        // testDeferred();
+         testWhen();
+        //testChain();
+    }
+
+    function testAjax1() {
+        $.ajax('/test?err=y').done(function(data) {
+            alert("done 1");
+        }).done(function() {
+            alert("done 2");
+        }).fail(function() {
+            alert("fail");
+        }).always(function() {
+            alert("always");
+        });
+    }
+
+    function testAjax2() {
+        $.ajax('/test?err=y').then(function() {
+           alert("success");
+        }, function() {
+            alert("error");
+        });
+    }
+
+    function testDeferred() {
+//        setTimeout(function() {
+//            var val = Math.random();
+//            if (val > 0.5) {
+//                alert('done: ' + val);
+//            } else {
+//                alert('fail: ' + val);
+//            }
+//        }, 100);
+
+        function tt() {
+            var defer = $.Deferred();
+            setTimeout(function() {
+                var val = Math.random();
+                val > 0.5 ? defer.resolve(val) : defer.reject(val);
+            },100);
+            return defer;
+        }
+
+        tt().done(function(data) {
+            alert('done: ' + data);
+        }).fail(function(data) {
+            alert('fail: ' + data);
+        });
+    }
+
+    function testWhen() {
+        $.when($.ajax('/test?err=n&a=1'),
+                $.ajax('/test?err=y&a=2'),
+                $.ajax('/test?err=n&a=3'))
+        .then(function() {
+            alert('success');
+            console.log(arguments);
+        }, function(promise, statusText, errObj) {
+            alert('error');
+            console.log(arguments);
+        });
+    }
+
+    function testChain() {
+        $.ajax('/test?err=n').then(function () {
+            alert("success 1");
+            return $.ajax('/test?a=yes');
+        }, function () {
+            alert("error 1");
+            return $.ajax('/test?a=no');
+        }).then(function () {
+            alert("success 2");
+            return $.ajax();
+        }).then();
+    }
+</script>
+</body>
+</html>

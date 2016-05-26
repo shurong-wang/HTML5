@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>拖放购物车</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        li {
+            list-style: none;
+        }
+        li {
+            float: left;
+            width: 200px;
+            border: 1px #000 solid;
+            margin: 10px;
+        }
+        li img {
+            width: 200px;
+        }
+        p {
+            text-align: right;
+            height: 20px;
+            border-bottom: 1px #333 dashed;
+        }
+        .cart {
+            width: 600px;
+            border: 1px #000 solid;
+            height: 300px;
+            clear: both;
+        }
+        .count {
+            float: left;
+            width: 200px;
+        }
+        .title {
+            float: left;
+            width: 200px;
+        }
+        .price {
+            float: left;
+            width: 200px;
+        }
+        .totalSum {
+            float: right;
+            font-weight: bold;
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+<ul>
+    <li draggable="true">
+        <img src="images/img1.jpg"/>
+        <p>javascript语言精粹</p>
+        <p>￥40</p>
+    </li>
+    <li draggable="true">
+        <img src="images/img2.jpg"/>
+        <p>javascript权威指南</p>
+        <p>￥120</p>
+    </li>
+    <li draggable="true">
+        <img src="images/img3.jpg"/>
+        <p>精通javascript</p>
+        <p>￥35</p>
+    </li>
+    <li draggable="true">
+        <img src="images/img4.jpg"/>
+        <p>DOM编程艺术</p>
+        <p>￥45</p>
+    </li>
+</ul>
+<div id="cart" class="cart">
+</div>
+
+<script>
+window.onload = function () {
+    var goodsLi = document.getElementsByTagName('li');
+    var cartDiv = document.getElementById('cart');
+    var totalSumDiv = null;
+    var totalSum = 0;
+    var goodsData = {};
+
+    for (var i = 0; i <  goodsLi.length; i++) {
+         goodsLi[i].ondragstart = function (ev) {
+            var aP = this.getElementsByTagName('p');
+            ev.dataTransfer.setData('title', aP[0].innerHTML);
+            ev.dataTransfer.setData('price', aP[1].innerHTML);
+            // dataTransfer.setDragImage(elem, x, y)：设置拖放操作的自定义图标
+            ev.dataTransfer.setDragImage(this, 10, 10);
+        };
+    }
+
+    cartDiv.ondragover = function (ev) {
+        ev.preventDefault();
+    };
+
+    cartDiv.ondrop = function (ev) {
+        ev.preventDefault();
+        var sTitle = ev.dataTransfer.getData('title');
+        var sPrice = ev.dataTransfer.getData('price');
+        if (!goodsData[sTitle]) {
+            // 数量
+            var oP = document.createElement('p');
+            var oSpan = document.createElement('span');
+            oSpan.className = 'count';
+            oSpan.innerHTML = 1;
+            oP.appendChild(oSpan);
+            // 货品
+            var oSpan = document.createElement('span');
+            oSpan.className = 'title';
+            oSpan.innerHTML = sTitle;
+            oP.appendChild(oSpan);
+            // 价格
+            var oSpan = document.createElement('span');
+            oSpan.className = 'price';
+            oSpan.innerHTML = sPrice;
+            oP.appendChild(oSpan);
+            cartDiv.appendChild(oP);
+            goodsData[sTitle] = 1;
+        } else {
+            var count = document.getElementsByClassName('count');
+            var title = document.getElementsByClassName('title');
+            for (var i = 0; i < title.length; i++) {
+                if (title[i].innerHTML == sTitle) {
+                    count[i].innerHTML = parseInt(count[i].innerHTML) + 1;
+                }
+            }
+        }
+        if (!totalSumDiv) {
+            totalSumDiv = document.createElement('div');
+            totalSumDiv.classList.add('totalSum');
+            totalSumDiv.id = 'totalSum';
+        }
+        totalSum += parseInt(sPrice.substring(1));
+        totalSumDiv.innerHTML = '￥' + totalSum;
+        cartDiv.appendChild(totalSumDiv);
+    };
+};
+</script>
+</body>
+</html>

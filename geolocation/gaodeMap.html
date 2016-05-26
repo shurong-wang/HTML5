@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <title>高德地图</title>
+    <style>
+        div, button{
+            font-size: 20px;
+            font-family: "Microsoft Yahei", sans-serif;
+            width: 200px;
+            text-align: center;
+            margin: 10px 0;
+        }
+
+        div {
+            height: 100px;
+            line-height: 100px;
+            border: 1px solid #A9A9A9;
+        }
+
+        button {
+            color: white;
+            height: 50px;
+            border-radius: 5px;
+            box-shadow: 2px 2px 2px #999;
+            background: linear-gradient(135deg, white, gray);
+        }
+    </style>
+    <!--<script src="debug.js"></script>-->
+    <script src="//cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+    <script src="http://webapi.amap.com/maps?v=1.3&key=1c22ed8fcc81436197faf632aaed0ddb"></script>
+</head>
+<body>
+<div id="loc-res">点击按钮定位城市</div>
+<button id="loc-btn">HTML5定位</button><br>
+<button id="amap-btn" onclick="getPositionSuccess({coords : {
+                    latitude : 39.904989,
+                    longitude : 116.405285
+                }})">调试高德</button>
+
+<div>北京</div>
+<div>上海</div>
+<div>广州</div>
+
+<script type="text/javascript">
+    var $locBtn = $('#loc-btn'), $locRes = $('#loc-res');
+    $locBtn.on('click', locateCity);
+
+    // 定位城市
+    function locateCity() {
+        $locRes.html("定位中...");
+        if (! navigator.geolocation) {
+            alert("你的浏览器不支持定位功能");
+            $locRes.html("选择城市");
+            return;
+        }
+        html5Location();
+    }
+
+    // html5 获取地理坐标
+    function html5Location() {
+        navigator.geolocation.getCurrentPosition(
+            getPositionSuccess, // 定位成功回调
+            getPositionError,   // 定位失败回调
+            {
+                enableHighAccuracy: false,   // 不要求高精度
+                timeout: 10000,  // 定位10秒超时
+                maximumAge: 3000   // 定位信息缓存3秒
+            }
+        );
+    }
+
+    // 获取经纬度成功 --回调函数
+    function getPositionSuccess(position) {
+        var
+            lat = position.coords.latitude,
+            lng = position.coords.longitude;
+
+//        alert(
+//                "纬度：" + lat  + "\n" +
+//                "精度：" + lng + "\n"
+//        );
+
+        var lnglatXY = new AMap.LngLat(lng, lat);
+        //加载地理编码插件
+        AMap.service(["AMap.Geocoder"], function() {
+            mGeocoder = new AMap.Geocoder({
+                radius: 100,
+                extensions: "base"
+            });
+            //逆地理编码
+            mGeocoder.getAddress(lnglatXY, function(status, result){
+                if(status === 'complete' && result.info === 'OK'){
+                    var formatted = result.regeocode.formattedAddress; // 地址描述（字符串）
+                    var component = result.regeocode.addressComponent; // 地址组件（对象）
+                    var addressObj = {
+                        prov : component.province, // 省
+                        city : component.city || component.province, // 市
+                        dist : component.district, // 区
+                        address : formatted.replace(component.province + component.city + component.district, '').replace(component.streetNumber, '') // 地址名
+                    };
+
+                    $locRes.html(addressObj.city + addressObj.dist);
+                }else{
+                    alert(" 获取位置信息失败，请选择所在城市 ");
+                    $locRes.html("选择城市");
+                }
+            });
+        });
+    }
+
+    // 获取经纬度成功 --回调函数
+    function getPositionError(error) {
+        $locRes.html("选择城市");
+        switch (error.code) {
+            case error.TIMEOUT :
+                alert(" 定位连接超时，请重试 ");
+                break;
+            case error.PERMISSION_DENIED :
+                alert(" 您拒绝了定位服务，查询已取消 ");
+                break;
+            case error.POSITION_UNAVAILABLE :
+                alert(" 获取位置失败，请选择城市 ");
+                break;
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html manifest="/offline.appcache">
+<head>
+    <meta charset="utf-8">
+    <title>应用程序缓存</title>
+    <link rel="stylesheet" href="style/offline.css">
+    <script type="text/javascript" src="style/offline.js"></script>
+</head>
+<body>
+
+    <p id="timePara">
+        <button onclick="getDateTime()">获得日期和时间</button>
+    </p>
+    <p><img src="style/offline.gif"></p>
+    <p>打开本页面，然后脱机浏览，重新加载页面。页面中的脚本和图像依然可用。</p>
+    <hr>
+    <dl>
+        <dt>应用程序缓存（Application Cache）</dt>
+        <dd>HTML5 引入了应用程序缓存，这意味着 web 应用可进行缓存，并可在没有因特网连接时进行访问</dd>
+        <dd>如需启用应用程序缓存,需要三个步骤：
+            <ol>
+                <li>在文档的 &lt;html&gt; 标签设置 <mark>manifest 属性</mark>，如 <mark>&lt;html manifest="/offline.appcache"&gt;</mark></li>
+                <li>在项目中新建 <mark>manifest 文件</mark>，manifest 文件的命名建议：<mark>xxx.appcache</mark></li>
+                <li>
+                    在 <mark>web 服务器</mark>配置正确的 MIME-type，即 <mark>text/cache-manifest</mark>
+                    <dd>
+                        <ul>
+                            <li>Apache：在 httpd.conf 文件添加 <mark>AddType text/cache-manifest   .manifest .appcache</mark></li>
+                            <li>Nginx：在 mime.types 文件添加 <mark>text/cache-manifest    mf manifest appcache</mark></li>
+                        </ul>
+                    </dd>
+                </li>
+            </ol>
+        </dd>
+    </dl>
+
+    <dl>
+        <dt>manifest 文件</dt>
+        <dd>manifest 文件是简单的文本文件，它告知浏览器被缓存的内容（以及不缓存的内容）</dd>
+        <dd>manifest 文件可分为四个部分：
+            <ol>
+                <li><mark>CACHE MANIFEST</mark> - 首行 CACHE MANIFEST 标识，设置后 manifest 文件才能生效</li>
+                <li><mark>CACHE</mark> - 在此项下列出的文件将在首次下载后进行缓存</li>
+                <li><mark>NETWORK</mark> - 在此项下列出的文件需要向服务器请求，且不会被缓存</li>
+                <li><mark>FALLBACK</mark> - 在此项下列出的文件规定，当页面无法访问时的报错页面（如 404 页面）</li>
+            </ol>
+        </dd>
+        <dd><mark>#</mark> 的重要提示：
+            <ol>
+                <li>manifest 文件中以 "#" 开头的是注释行，但也可满足其他用途</li>
+                <li>应用的缓存会在其 manifest 文件更改时被更新，而图片或脚本的修改并不会更新缓存</li>
+                <li><mark>更新 manifest 文件注释行中的日期和版本号是一种使浏览器重新缓存文件的办法</mark></li>
+            </ol>
+        </dd>
+    </dl>
+</body>
+</html>

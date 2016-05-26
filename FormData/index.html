@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset=utf-8>
+    <meta name="viewport" content="width=620">
+    <title>拖放自动上传</title>
+    <style>
+        article{
+            border:1px solid #999999;
+        }
+        article div, article p{
+            box-sizing: border-box; width: 300px; margin: 20px auto;
+        }
+        .holder {
+            border: 2px dashed #ccc; min-height: 300px;
+        }
+        .holder.hover {
+            border: 2px dashed #0c0;
+        }
+
+        .holder img {
+            display: block; margin: 10px auto;
+        }
+
+        .holder p {
+            margin: 10px; font-size: 14px;
+        }
+
+        .progress-wrap {
+            text-align: center;
+        }
+        .progress-wrap progress {
+            width: 300px;
+            text-align: center;
+        }
+
+        .fail {
+            background: #c00; padding: 2px; color: #fff;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+<section id="wrapper">
+    <article>
+        <div id="holder" class="holder">
+            <!-- 图片上传及预览去也-->
+        </div>
+
+        <p id="upload" class="hidden">
+            <label>您的浏览器不支持拖放，请点选择文件：<br/><input type="file"></label>
+        </p>
+        <p id="filereader" class="hidden">您的浏览器不支持 File API 和 FileReader API</p>
+        <p id="formdata" class="hidden">您的浏览器不支持 XHR2's FormData</p>
+        <p id="progress" class="hidden">您的浏览器不支持 XHR2's upload progress</p>
+        <p class="progress-wrap">
+            <progress id="progress-bar" min="0" max="100"  value="0">
+                <span id="progress-inner">0</span>%
+            </progress>
+        </p>
+        <p>拖动图片到方框区域，自动完成上传！</p>
+    </article>
+
+    <script>
+        var
+            UPLOAD_URL = "http://test.html5.com/FormData/index.php",
+            holder = document.getElementById('holder'),
+            progressBar = document.getElementById('progress-bar'),
+            progressInner = document.getElementById('progress-inner');
+            fileupload = document.getElementById('upload');
+
+        // 检测 PAI 支持情况
+        var
+            checkApi = {
+                filereader: typeof FileReader != 'undefined',
+                draggable: 'draggable' in document.createElement('span'),
+                formdata: !!window.FormData,
+                progress: "upload" in new XMLHttpRequest
+            },
+            support = {
+                filereader: document.getElementById('filereader'),
+                formdata: document.getElementById('formdata'),
+                progress: document.getElementById('progress')
+            },
+            acceptedTypes = {
+                'image/png': true,
+                'image/jpeg': true,
+                'image/gif': true
+            };
+
+            ['filereader', 'formdata', 'progress'].forEach(function (api) {
+            if (checkApi[api] === false) {
+                support[api].className = 'fail';
+            } else {
+                support[api].className = 'hidden';
+            }
+        });
+
+        // 图片拖放
+        if (checkApi.draggable) {
+            holder.ondragover = function () {
+                this.classList.add('hover');
+                return false;
+            };
+            holder.ondrop = function (e) {
+                this.classList.remove('hover');
+                e.preventDefault();
+                uploadfiles(e.dataTransfer.files, UPLOAD_URL);
+            };
+            holder.ondragend = function () {
+                return false;
+            };
+        } else {
+            fileupload.className = 'hidden';
+            fileupload.querySelector('input').onchange = function () {
+                uploadfiles(this.files, url);
+            };
+        }
+
+        // 图片预览
+        function previewfile(file) {
+            if (checkApi.filereader === true && acceptedTypes[file.type] === true) {
+                var reader = new FileReader();
+                reader.onload = function (event) {
+                    var image = new Image();
+                    image.src = event.target.result;
+                    image.width = 250; // 调整尺寸
+                    holder.appendChild(image);
+                };
+
+                reader.readAsDataURL(file);
+            } else {
+                holder.innerHTML += '<p>Uploaded ' + file.name + ' ' + (file.size ? (file.size / 1024 | 0) + 'K' : '');
+                console.log(file);
+            }
+        }
+
+        // 文件上传
+        function uploadfiles(files, url) {
+            debugger;
+            var formData = checkApi.formdata ? new FormData() : null;
+            for (var i = 0; i < files.length; i++) {
+                if (checkApi.formdata){
+                    formData.append('file', files[i]);
+                }
+                // 预览图片
+                previewfile(files[i]);
+            }
+
+            if (checkApi.formdata) {
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', url);
+                xhr.onload = function () {
+                    progressBar.value = 100;
+                    progressInner.innerHTML = 100;
+                };
+                // 同步上传进度
+                if (checkApi.progress) {
+                    xhr.upload.onprogress = function (event) {
+                        console.log(event.loaded);
+
+                        if (event.lengthComputable) {
+                            var complete = (event.loaded / event.total * 100 | 0);
+                            progressBar.value = complete;
+                            progressInner.innerHTML = complete;
+                        }
+                    }
+                }
+
+                xhr.send(formData);
+            }
+        }
+
+    </script>
+</section>
+</body>
+</html>
