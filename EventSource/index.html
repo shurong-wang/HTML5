@@ -20,13 +20,13 @@
         } else {
             var serv = new EventSource(SERVER_URL);
             /*
-            // 注意：如果服务端未设置 event ，必须监听 message 事件
+            // 注意：如果服务端没有设置 event 值，则客户端监听 message 事件
             serv.addEventListener("message", function (event) {
                 serverData.innerHTML = event.data;
             });
             //*/
 
-            // 注意：如果服务端设置 event:newDate ，则必须监听 newDate 事件
+            // 注意：如果服务端设置 event : newDate ，则客户端必须监听 newDate 事件
             serv.addEventListener("newDate", function (event) {
                 serverData.innerHTML = event.data;
             });
