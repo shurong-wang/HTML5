@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+ <head>
+  <meta charset="UTF-8">
+  <title>网站首页</title>
+  <script src="./pageVisibility.js"></script>
+ </head>
+ <body>
+	<h3 id="loginInfo"></h3>
+
+	<script type="text/javascript">
+		/*
+			// pageVisibility.js 兼容处理
+			pageVisibility.hidden === document.hidden
+			pageVisibility.visibilityState === document.visibilityState
+			pageVisibility.visibilitychange(function() {}) === document.addEventListener("visibilitychange", function() {})
+		*/
+	  
+		(function() {
+			if (typeof pageVisibility.hidden == "undefined") {
+				alert("浏览器不支持 Page Visibility API");
+			}
+			var eleLoginInfo = document.querySelector("#loginInfo");
+			var funLoginInfo = function() {
+				var username = localStorage.username || sessionStorage.username;
+				if (username) {
+					eleLoginInfo.innerHTML = '欢迎回来，<strong>' + username + '</strong>';
+					sessionStorage.username = username;
+				} else {
+					// document.location.replace 切换页面后，无法通过“后退”退回到原页面
+					eleLoginInfo.innerHTML = '您尚未登录，请<a target="_blank" href="'+ location.href.replace("index", "login") +'">登录</a>';
+				}    
+			}
+			pageVisibility.visibilitychange(function() {
+				if (!this.hidden) funLoginInfo();
+			});
+			
+			funLoginInfo();
+			
+			// 页面关闭清除localStorage
+			window.addEventListener("unload", function() {
+				localStorage.removeItem("username");
+			})
+			
+		})();
+	</script>
+ </body>
+</html>

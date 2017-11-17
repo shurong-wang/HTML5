@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+ <head>
+  <meta charset="UTF-8">
+  <title>登录页</title>
+ </head>
+ <body>
+	<form id="loginForm" action="" method="post">
+		<p>账号：<input type="text" name="username" required /></p>
+		<p>密码：<input type="password" name="password" required /></p>
+		<p><input type="submit" /></p>
+	</form>
+
+	<script type="text/javascript">
+		(function() {
+			if (typeof window.screenX !== "number") {
+				alert("浏览器不支持HTML5表单的");
+				return;
+			}
+
+			var eleLoginForm = document.querySelector("#loginForm");
+			eleLoginForm.addEventListener("submit", function(e) {
+				// 记录登录状态
+				localStorage.username = document.querySelector("input[name='username']").value;
+
+				alert("登录成功！切回刚才的页面。");
+
+				this.reset();
+				e.preventDefault();
+			}, false);
+		})();
+	</script>
+ </body>
+</html>
